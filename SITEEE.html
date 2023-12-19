@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React ToDo App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #3494e6, rgb(185, 2, 48));
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #todo-container {
+            width: 60%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #task-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        #task-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #e6e6e6;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .task:hover {
+            background-color: #d4d4d4;
+        }
+
+        .delete-btn {
+            background-color: #ff6666;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #e60000;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .toggle-checkbox {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="todo-container">
+        <h2>Задачи</h2>
+        <input type="text" id="task-input" placeholder="Добавить">
+        <ul id="task-list"></ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const taskInput = document.getElementById('task-input');
+            const taskList = document.getElementById('task-list');
+
+            taskInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    addTask();
+                }
+            });
+
+            function addTask() {
+                const taskText = taskInput.value.trim();
+                if (taskText !== '') {
+                    const taskItem = document.createElement('li');
+                    taskItem.className = 'task';
+
+                    const taskContent = document.createElement('span');
+                    taskContent.textContent = taskText;
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.className = 'delete-btn';
+                    deleteButton.addEventListener('click', function() {
+                        deleteTask(taskItem);
+                    });
+
+                    const toggleCheckbox = document.createElement('input');
+                    toggleCheckbox.type = 'checkbox';
+                    toggleCheckbox.className = 'toggle-checkbox';
+                    toggleCheckbox.addEventListener('change', function() {
+                        toggleComplete(taskItem);
+                    });
+
+                    taskItem.appendChild(taskContent);
+                    taskItem.appendChild(toggleCheckbox);
+                    taskItem.appendChild(deleteButton);
+                    taskList.appendChild(taskItem);
+
+                    taskInput.value = '';
+                }
+            }
+
+            function deleteTask(taskItem) {
+                taskList.removeChild(taskItem);
+            }
+
+            function toggleComplete(taskItem) {
+                taskItem.classList.toggle('completed');
+            }
+        });
+    </script>
+</body>
+</html>
